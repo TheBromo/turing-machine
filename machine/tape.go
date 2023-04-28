@@ -1,23 +1,19 @@
 package machine
 
-import "errors"
+import (
+	"errors"
+)
 
 type Tape struct {
 	Content  []rune
 	Position int
 }
 
-const (
-	Right  = iota
-	Left   
-)
-
 func (t *Tape) Read() rune {
 	return t.Content[t.Position]
 }
 
-func (t *Tape) Move(direction rune, write rune) (rune, error) {
-
+func (t *Tape) Move(direction int, write rune) (rune, error) {
 	if t.Position >= 0 && t.Position < len(t.Content) {
 		t.Content[t.Position] = write
 
@@ -30,4 +26,9 @@ func (t *Tape) Move(direction rune, write rune) (rune, error) {
 	} else {
 		return rune(0), errors.New("position out of bounds")
 	}
+}
+
+func (t *Tape) Init(tape string) {
+    t.Content = []rune(tape);
+    t.Position = 0
 }
