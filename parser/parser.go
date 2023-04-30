@@ -14,21 +14,19 @@ func InitTape(tape string) tu.Tape {
 	return t
 }
 
-
-
 func InitMachine(machineString string) (tu.Machine, error) {
-	atEnd := false
+
 	re := regexp.MustCompile(`(0+1){5}`)
 	machine := tu.Machine{}
 
-	for !atEnd {
+	for len(machineString) > 0 {
 		loc := re.FindIndex([]byte(machineString))
 
 		if len(loc) == 0 {
-			atEnd = true
+			return machine, nil
 		}
 
-		instruction := machineString[loc[0]:loc[1]]
+		instruction := machineString[0:loc[1]]
 		machineString = machineString[loc[1]:]
 
 		err := processMachineInstruction(&machine, instruction)
@@ -38,7 +36,6 @@ func InitMachine(machineString string) (tu.Machine, error) {
 		}
 
 	}
-
 	return machine, nil
 }
 

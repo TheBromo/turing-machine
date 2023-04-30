@@ -7,6 +7,7 @@ type Machine struct {
 }
 
 func (machine *Machine) DoStep() error {
+	//TODO set current state
 	input := machine.tape.Read()
 	transition, err := machine.currentState.getTransitionForInput(input)
 	if err != nil {
@@ -17,11 +18,20 @@ func (machine *Machine) DoStep() error {
 	return nil
 }
 
-func (machine *Machine) ToString() {
-	//visualize tape
-	//visualize states
+func (machine *Machine) TapeToString() string {
+	tape := ""
+	arrow := ""
 
-    //
+	for i, v := range machine.tape.Content {
+		tape += string(v) + " "
+		if i == machine.tape.Position {
+			arrow += " ▲"
+		} else {
+			arrow += "  "
+		}
+
+	}
+	return tape + "\n" + arrow
 }
 
 func (machine *Machine) GetOrAddState(state State) *State {
