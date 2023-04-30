@@ -4,8 +4,8 @@ const Right = iota
 const Left = iota
 
 type Transition struct {
-	read      rune
-	write     rune
-	direction int
-	endState  *State
+	Read      rune
+	Write     rune
+	Direction int
+	EndState  *State
 }

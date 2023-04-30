@@ -1,6 +1,6 @@
 package machine
 
 type State struct {
-	number      int
-	transitions []Transition
+	Number      int
+	Transitions []Transition
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"regexp"
 
-	machine "github.com/thebromo/turing-machine/machine"
+	parser "github.com/thebromo/turing-machine/parser"
 )
 
 func main() {
@@ -16,8 +16,8 @@ func main() {
 	split := re.Split(input, 0)
 
 	if len(split) == 2 {
-		turing, err := machine.InitMachine(split[0])
-		tape := machine.InitTape(split[1])
+		turing, err := parser.InitMachine(split[0])
+		tape := parser.InitTape(split[1])
 
 		if err != nil {
 			panic(err)
