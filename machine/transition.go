@@ -1,7 +1,9 @@
 package machine
 
-const Right = iota
-const Left = iota
+const (
+    Left = iota
+    Right 
+)
 
 type Transition struct {
 	Read      rune

@@ -1,20 +1,20 @@
 package machine
 
 type Machine struct {
-	currentState *State
-	states       []*State
-	tape         *Tape
+	CurrentState *State
+	States       []*State
+	Tape         *Tape
 }
 
 func (machine *Machine) DoStep() error {
 	//TODO set current state
-	input := machine.tape.Read()
-	transition, err := machine.currentState.getTransitionForInput(input)
+	input := machine.Tape.Read()
+	transition, err := machine.CurrentState.getTransitionForInput(input)
 	if err != nil {
 		return err
 	}
-	machine.tape.Move(transition.Direction, transition.Write)
-	machine.currentState = transition.EndState
+	machine.Tape.Move(transition.Direction, transition.Write)
+	machine.CurrentState = transition.EndState
 	return nil
 }
 
@@ -22,9 +22,9 @@ func (machine *Machine) TapeToString() string {
 	tape := ""
 	arrow := ""
 
-	for i, v := range machine.tape.Content {
-		tape += string(v) + " "
-		if i == machine.tape.Position {
+	for i, v := range machine.Tape.Content {
+		tape += " " + string(v)
+		if i == machine.Tape.Position {
 			arrow += " ▲"
 		} else {
 			arrow += "  "
@@ -35,7 +35,7 @@ func (machine *Machine) TapeToString() string {
 }
 
 func (machine *Machine) GetOrAddState(state State) *State {
-	for _, e := range machine.states {
+	for _, e := range machine.States {
 		if e.Number == state.Number {
 			return e
 		}
@@ -45,7 +45,7 @@ func (machine *Machine) GetOrAddState(state State) *State {
 }
 
 func (machine Machine) hasState(state State) bool {
-	for _, e := range machine.states {
+	for _, e := range machine.States {
 		if e.Number == state.Number {
 			return true
 		}
@@ -55,6 +55,6 @@ func (machine Machine) hasState(state State) bool {
 
 func (machine *Machine) addNewState(state *State) {
 	if !machine.hasState(*state) {
-		machine.states = append(machine.states, state)
+		machine.States = append(machine.States, state)
 	}
 }

@@ -14,19 +14,20 @@ func InitTape(tape string) tu.Tape {
 	return t
 }
 
-func InitMachine(machineString string) (tu.Machine, error) {
+func InitMachine(machineString string, tape tu.Tape) (tu.Machine, error) {
 
 	re := regexp.MustCompile(`(0+1){5}`)
-	machine := tu.Machine{}
+	machine := tu.Machine{Tape: &tape}
 
 	for len(machineString) > 0 {
 		loc := re.FindIndex([]byte(machineString))
 
 		if len(loc) == 0 {
+			machine.CurrentState = machine.States[0]
 			return machine, nil
 		}
 
-		instruction := machineString[0:loc[1]]
+		instruction := machineString[loc[0]:loc[1]]
 		machineString = machineString[loc[1]:]
 
 		err := processMachineInstruction(&machine, instruction)
@@ -42,8 +43,11 @@ func InitMachine(machineString string) (tu.Machine, error) {
 func processMachineInstruction(machine *tu.Machine, instruction string) error {
 	counters := regexp.MustCompile("1").Split(instruction, 5)
 
-	if len(counters) != 5 {
-		return errors.New("incorrect instruction")
+	//add erors
+	err := checkForIncorrectInstructions(counters)
+
+	if err != nil {
+		return err
 	}
 
 	startState := machine.GetOrAddState(readState(len(counters[0])))
@@ -60,6 +64,17 @@ func processMachineInstruction(machine *tu.Machine, instruction string) error {
 	}
 	startState.Transitions = append(startState.Transitions, transit)
 
+	return nil
+}
+
+func checkForIncorrectInstructions(inst []string) error {
+	re := regexp.MustCompile("^(1|0)+$")
+
+	for _, v := range inst {
+		if !re.MatchString(v) {
+			return errors.New("string does not match pattern")
+		}
+	}
 	return nil
 }
 

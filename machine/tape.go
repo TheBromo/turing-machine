@@ -5,15 +5,15 @@ import (
 )
 
 type Tape struct {
-	Content  []rune
+	Content  []int
 	Position int
 }
 
-func (t *Tape) Read() rune {
+func (t *Tape) Read() int {
 	return t.Content[t.Position]
 }
 
-func (t *Tape) Move(direction int, write rune) (rune, error) {
+func (t *Tape) Move(direction int, write int) (int, error) {
 	if t.Position >= 0 && t.Position < len(t.Content) {
 		t.Content[t.Position] = write
 
@@ -24,7 +24,6 @@ func (t *Tape) Move(direction int, write rune) (rune, error) {
 		}
 		return t.Read(), nil
 	} else {
-		return rune(0), errors.New("position out of bounds")
+		return 0, errors.New("position out of bounds")
 	}
 }
-
