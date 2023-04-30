@@ -1,0 +1,5 @@
+machine:
+    Name: "TestMachine"
+    Input: "0011001100"
+    States:
+        - 

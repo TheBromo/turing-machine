@@ -28,7 +28,9 @@ func (t *Tape) Move(direction int, write rune) (rune, error) {
 	}
 }
 
-func (t *Tape) Init(tape string) {
-    t.Content = []rune(tape);
-    t.Position = 0
+func InitTape(tape string) Tape {
+	t := Tape{}
+	t.Content = []rune(tape)
+	t.Position = 0
+	return t
 }

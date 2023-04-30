@@ -1,0 +1,4 @@
+Machine:
+    States: ["q1","q2","q3"]
+    Alphabet: ["0","1"]
+    Input: ""
