@@ -24,9 +24,9 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		logger.Print(turing.ToString())
+		logger.PrintMachine(turing)
 		for turing.DoStep() == nil {
-			logger.Print(turing.ToString())
+			logger.PrintMachine(turing)
 			time.Sleep(2 * time.Second) // pauses execution for 2 seconds
 		}
 
