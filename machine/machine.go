@@ -1,5 +1,7 @@
 package machine
 
+import "strconv"
+
 type Machine struct {
 	CurrentState *State
 	States       []*State
@@ -18,12 +20,36 @@ func (machine *Machine) DoStep() error {
 	return nil
 }
 
-func (machine *Machine) TapeToString() string {
+func (machine *Machine) ToString() string {
+	return machine.tapeToString() + "\n" + machine.stateToString()
+}
+
+func (machine *Machine) stateToString() string {
+	state := ""
+	current := strconv.Itoa(machine.CurrentState.Number)
+	state += "q" + current
+	for _, v := range machine.CurrentState.Transitions {
+		read := strconv.Itoa(v.Read)
+		end := strconv.Itoa(v.EndState.Number)
+		write := strconv.Itoa(v.Write)
+		dir := ""
+		if v.Direction == Left {
+			dir += "L"
+		} else {
+			dir += "R"
+		}
+		state += "\n" + "δ(q" + current + ", " + read + ") = (q" + end + "," + write + ", " + dir + "),"
+	}
+	return state
+}
+
+func (machine *Machine) tapeToString() string {
+
 	tape := ""
 	arrow := ""
 
 	for i, v := range machine.Tape.Content {
-		tape += " " + string(v)
+		tape += " " + strconv.Itoa(v)
 		if i == machine.Tape.Position {
 			arrow += " ▲"
 		} else {

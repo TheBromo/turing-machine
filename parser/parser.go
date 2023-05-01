@@ -9,7 +9,13 @@ import (
 
 func InitTape(tape string) tu.Tape {
 	t := tu.Tape{}
-	t.Content = []rune(tape)
+
+	t.Content = make([]int, len(tape))
+
+	for i, v := range tape {
+		t.Content[i] = int(v - '0')
+	}
+
 	t.Position = 0
 	return t
 }
@@ -57,8 +63,8 @@ func processMachineInstruction(machine *tu.Machine, instruction string) error {
 	direction := readDirection(len(counters[4]))
 
 	transit := tu.Transition{
-		Read:      rune(read),
-		Write:     rune(write),
+		Read:      read,
+		Write:     write,
 		EndState:  endState,
 		Direction: direction,
 	}

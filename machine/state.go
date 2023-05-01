@@ -9,7 +9,7 @@ type State struct {
 	Transitions []Transition
 }
 
-func (state *State) getTransitionForInput(input rune) (Transition, error) {
+func (state *State) getTransitionForInput(input int) (Transition, error) {
 	for _, v := range state.Transitions {
 		if v.Read == input {
 			return v, nil

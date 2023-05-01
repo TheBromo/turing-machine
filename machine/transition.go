@@ -6,8 +6,8 @@ const (
 )
 
 type Transition struct {
-	Read      rune
-	Write     rune
+	Read      int
+	Write     int
 	Direction int
 	EndState  *State
 }

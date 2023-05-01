@@ -11,7 +11,7 @@ import (
 
 func main() {
 	//read file
-	input := "01001000101001100010101001011000100100101001100010001000101011100110101010"
+	input := "101001010010011010100010100110001001010010011000101001010011110110101010"
 
 	re := regexp.MustCompile("111")
 
@@ -24,9 +24,9 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-
-		for turing.DoStep() != nil {
-			logger.Print(turing.TapeToString())
+		logger.Print(turing.ToString())
+		for turing.DoStep() == nil {
+			logger.Print(turing.ToString())
 			time.Sleep(2 * time.Second) // pauses execution for 2 seconds
 		}
 
