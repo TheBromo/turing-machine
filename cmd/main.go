@@ -9,9 +9,12 @@ import (
 	parser "github.com/thebromo/turing-machine/parser"
 )
 
+//TODO left and right
+//TODO check if states are read correctly
+
 func main() {
 	//read file
-	input := "101001010010011010100010100110001001010010011000101001010011110110101010"
+	input := "01001000101001 10001010100101 1000100100101001 1000100010001010 11110110101010"
 
 	re := regexp.MustCompile("111")
 

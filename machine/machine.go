@@ -7,7 +7,6 @@ type Machine struct {
 }
 
 func (machine *Machine) DoStep() error {
-	//TODO set current state
 	input := machine.Tape.Read()
 	transition, err := machine.CurrentState.getTransitionForInput(input)
 	if err != nil {
