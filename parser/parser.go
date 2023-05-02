@@ -23,36 +23,22 @@ func InitTape(tape string) tu.Tape {
 
 func InitMachine(machineString string, tape tu.Tape) (tu.Machine, error) {
 
-	re := regexp.MustCompile(`(0+1){5}`)
 	machine := tu.Machine{Tape: &tape}
+	instructions := strings.Split(machineString, "11")
 
-	for len(machineString) > 0 {
-		loc := re.FindIndex([]byte(machineString))
-
-		if len(loc) == 0 {
-			machine.CurrentState = machine.States[0]
-			return machine, nil
-		}
-
-		instruction := machineString[loc[0]:loc[1]]
-		machineString = machineString[loc[1]:]
-
-		err := processMachineInstruction(&machine, instruction)
-
+	for _, v := range instructions {
+		err := processMachineInstruction(&machine, v)
 		if err != nil {
 			return machine, err
 		}
-
 	}
+
+	machine.CurrentState = machine.States[0]
 	return machine, nil
 }
 
 func processMachineInstruction(machine *tu.Machine, instruction string) error {
-	counters := regexp.MustCompile("1").Split(instruction, 5)
-
-	for i, v := range counters {
-		counters[i] = strings.ReplaceAll(v, "1", "")
-	}
+	counters := strings.Split(instruction, "1")
 
 	//add erors
 	err := checkForIncorrectInstructions(counters)
@@ -83,7 +69,13 @@ func processMachineInstruction(machine *tu.Machine, instruction string) error {
 }
 
 func checkForIncorrectInstructions(inst []string) error {
-	re := regexp.MustCompile("^(1|0)+$")
+	re := regexp.MustCompile("^0+$")
+
+    for i := 0; i < len(inst); i++ {
+        if inst[i] == "" {
+            remove(inst, i)
+        }
+    }
 
 	for _, v := range inst {
 		if !re.MatchString(v) {
@@ -109,4 +101,9 @@ func readState(id int) tu.State {
 
 func readBinaryOperator(count int) int {
 	return count - 1
+}
+
+func remove(s []string, i int) []string {
+	s[i] = s[len(s)-1]
+	return s[:len(s)-1]
 }

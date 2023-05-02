@@ -18,9 +18,9 @@ func (t *Tape) Move(direction int, write int) (int, error) {
 		t.Content[t.Position] = write
 
 		if direction == Right {
-			t.Position = t.Position - 1
+			t.Position += 1
 		} else {
-			t.Position = t.Position + 1
+			t.Position -= 1
 		}
 		return t.Read(), nil
 	} else {
