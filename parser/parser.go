@@ -3,6 +3,7 @@ package machine
 import (
 	"errors"
 	"regexp"
+	"strings"
 
 	tu "github.com/thebromo/turing-machine/machine"
 )
@@ -49,6 +50,10 @@ func InitMachine(machineString string, tape tu.Tape) (tu.Machine, error) {
 func processMachineInstruction(machine *tu.Machine, instruction string) error {
 	counters := regexp.MustCompile("1").Split(instruction, 5)
 
+	for i, v := range counters {
+		counters[i] = strings.ReplaceAll(v, "1", "")
+	}
+
 	//add erors
 	err := checkForIncorrectInstructions(counters)
 
@@ -60,7 +65,11 @@ func processMachineInstruction(machine *tu.Machine, instruction string) error {
 	read := readBinaryOperator(len(counters[1]))
 	endState := machine.GetOrAddState(readState(len(counters[2])))
 	write := readBinaryOperator(len(counters[3]))
-	direction := readDirection(len(counters[4]))
+	direction, err := readDirection(len(counters[4]))
+
+	if err != nil {
+		return err
+	}
 
 	transit := tu.Transition{
 		Read:      read,
@@ -84,12 +93,13 @@ func checkForIncorrectInstructions(inst []string) error {
 	return nil
 }
 
-func readDirection(i int) int {
-	if i == 0 {
-		return tu.Right
-	} else {
-		return tu.Left
+func readDirection(i int) (int, error) {
+	if i == 1 {
+		return tu.Right, nil
+	} else if i == 2 {
+		return tu.Left, nil
 	}
+	return -1, errors.New("incorrect direction")
 }
 
 func readState(id int) tu.State {
