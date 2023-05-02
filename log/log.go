@@ -11,6 +11,7 @@ import (
 const columnWidth = 35
 
 var (
+	norm      = lipgloss.AdaptiveColor{Light: "#d4d4d5", Dark: "#d4d4d5"}
 	subtle    = lipgloss.AdaptiveColor{Light: "#46484c", Dark: "#46484c"}
 	highlight = lipgloss.AdaptiveColor{Light: "#e87979", Dark: "#e87979"}
 	special   = lipgloss.AdaptiveColor{Light: "#37d99e", Dark: "#37d99e"}
@@ -55,16 +56,19 @@ var (
 	}
 
 	machineStyle = lipgloss.NewStyle().Bold(true).
-			Foreground(lipgloss.Color("#d4d4d5")).
+			Foreground(norm).
 			PaddingTop(1).
 			PaddingBottom(1).
 			PaddingLeft(2).
 			Margin(1).
 			PaddingRight(2).BorderStyle(lipgloss.RoundedBorder()).Render
 	machineStyleActive = lipgloss.NewStyle().Foreground(special).Render
+
+	errorStyle = lipgloss.NewStyle().Bold(true).
+			Foreground(subtle).Background(highlight).Render
 )
 
-func PrintMachine(machine tu.Machine) {
+func PrintMachine(machine tu.Machine, err error) {
 	states := make([]string, 0)
 	for _, v := range machine.States {
 		if v.Number == machine.CurrentState.Number {
@@ -74,8 +78,16 @@ func PrintMachine(machine tu.Machine) {
 		}
 
 	}
-	fmt.Println(lipgloss.JoinHorizontal(lipgloss.Top, printTape(*machine.Tape),
-		lipgloss.JoinHorizontal(lipgloss.Top, states...)))
+	if err == nil {
+		fmt.Println(lipgloss.JoinHorizontal(lipgloss.Top, printTape(*machine.Tape),
+			lipgloss.JoinHorizontal(lipgloss.Top, states...)))
+	} else {
+		fmt.Println(
+			lipgloss.JoinVertical(lipgloss.Left, errorStyle("⚠: "+err.Error()),
+				lipgloss.JoinHorizontal(lipgloss.Top, printTape(*machine.Tape),
+					lipgloss.JoinHorizontal(lipgloss.Top, states...))))
+	}
+
 }
 
 func printTape(tape tu.Tape) string {

@@ -9,12 +9,12 @@ import (
 	parser "github.com/thebromo/turing-machine/parser"
 )
 
-//TODO left and right
-//TODO check if states are read correctly
+//TODO binary number representation
+//TODO step and laufmodus
 
 func main() {
 	//read file
-	input := "01001000101001 10001010100101 1000100100101001 1000100010001010 11110110101010"
+	input := "010010001010011000101010010110001001001010011000100010001010111100011111"
 
 	re := regexp.MustCompile("111")
 
@@ -27,9 +27,9 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		logger.PrintMachine(turing)
-		for turing.DoStep() == nil {
-			logger.PrintMachine(turing)
+		for {
+			logger.PrintMachine(turing, err)
+			err = turing.DoStep()
 			time.Sleep(2 * time.Second) // pauses execution for 2 seconds
 		}
 

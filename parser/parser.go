@@ -33,7 +33,7 @@ func InitMachine(machineString string, tape tu.Tape) (tu.Machine, error) {
 		}
 	}
 
-	machine.CurrentState = machine.States[0]
+	setStartElement(&machine)
 	return machine, nil
 }
 
@@ -71,11 +71,11 @@ func processMachineInstruction(machine *tu.Machine, instruction string) error {
 func checkForIncorrectInstructions(inst []string) error {
 	re := regexp.MustCompile("^0+$")
 
-    for i := 0; i < len(inst); i++ {
-        if inst[i] == "" {
-            remove(inst, i)
-        }
-    }
+	for i := 0; i < len(inst); i++ {
+		if inst[i] == "" {
+			remove(inst, i)
+		}
+	}
 
 	for _, v := range inst {
 		if !re.MatchString(v) {
@@ -86,9 +86,9 @@ func checkForIncorrectInstructions(inst []string) error {
 }
 
 func readDirection(i int) (int, error) {
-	if i == 1 {
+	if i == 2 {
 		return tu.Right, nil
-	} else if i == 2 {
+	} else if i == 1 {
 		return tu.Left, nil
 	}
 	return -1, errors.New("incorrect direction")
@@ -103,7 +103,15 @@ func readBinaryOperator(count int) int {
 	return count - 1
 }
 
-func remove(s []string, i int) []string {
-	s[i] = s[len(s)-1]
-	return s[:len(s)-1]
+func setStartElement(machine *tu.Machine) {
+	for _, v := range machine.States {
+		if v.Number == 1 {
+			machine.CurrentState = v
+		}
+	}
+
+}
+
+func remove(slice []string, s int) []string {
+	return append(slice[:s], slice[s+1:]...)
 }

@@ -14,7 +14,7 @@ func (machine *Machine) DoStep() error {
 	}
 	machine.Tape.Move(transition.Direction, transition.Write)
 	machine.CurrentState = transition.EndState
-	return nil
+	return err
 }
 
 func (machine *Machine) GetOrAddState(state State) *State {
