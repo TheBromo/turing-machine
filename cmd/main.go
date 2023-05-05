@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"regexp"
 	"time"
 
@@ -13,11 +15,11 @@ import (
 //TODO step and laufmodus
 
 func main() {
-	//read file
-	input := "010010001010011000101010010110001001001010011000100010001010111100011111"
+	stepModus := askModus()
 
+	    //read file
+	input := "0100100010100110001010100101100010010010100110001000100010101110000010000"
 	re := regexp.MustCompile("111")
-
 	split := re.Split(input, 2)
 
 	if len(split) == 2 {
@@ -27,17 +29,36 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		for {
+		for err == nil {
 			logger.PrintMachine(turing, err)
+
 			err = turing.DoStep()
-			time.Sleep(2 * time.Second) // pauses execution for 2 seconds
+			if stepModus {
+				time.Sleep(2 * time.Second) // pauses execution for 2 seconds
+			}
 		}
 
-		fmt.Printf("turing: %v\n", turing)
-		fmt.Printf("tape: %v\n", tape)
+		logger.PrintMachine(turing, err)
 
 	} else {
 		fmt.Errorf("incorrect format")
+	}
+}
+
+func askModus() bool {
+	fmt.Print("Stepmpdus (y/N)?\n> ")
+	reader := bufio.NewReader(os.Stdin)
+	char, _, err := reader.ReadRune()
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	switch char {
+	case 'y', 'Y':
+		return true
+	default:
+		return false
 	}
 
 }
