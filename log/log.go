@@ -8,7 +8,7 @@ import (
 	tu "github.com/thebromo/turing-machine/machine"
 )
 
-const columnWidth = 35
+const columnWidth = 25
 
 var (
 	norm      = lipgloss.AdaptiveColor{Light: "#d4d4d5", Dark: "#d4d4d5"}
@@ -30,7 +30,7 @@ var (
 			BorderBottom(true).
 			BorderForeground(subtle).
 			MarginRight(2).
-			Width(columnWidth - 5).
+			Width(columnWidth).
 			Render
 
 	listHeaderActive = lipgloss.NewStyle().
@@ -38,7 +38,7 @@ var (
 				BorderBottom(true).
 				BorderForeground(special).
 				MarginRight(2).
-				Width(columnWidth - 5).
+				Width(columnWidth).
 				Foreground(special).
 				Render
 
@@ -104,7 +104,7 @@ func printTape(tape tu.Tape) string {
 		}
 
 	}
-	return machineStyle(top + "\n" + arrow)
+	return machineStyle(top + "\n" + arrow + "\n")
 }
 
 func printState(state tu.State) string {
