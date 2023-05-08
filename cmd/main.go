@@ -18,9 +18,8 @@ func main() {
 	fmt.Print("Stepmpdus (y/N)?\n> ")
 	stepModus := askBool()
 	file := askFile()
-	fmt.Print(file)
 	//read file
-	input := "0100100010100110001010100101100010010010100110001000100010101110000010000"
+	input := file
 	re := regexp.MustCompile("111")
 	split := re.Split(input, 2)
 
@@ -77,7 +76,6 @@ func askFile() string {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println(input)
 		return string(getContent(input))
 
 	} else {

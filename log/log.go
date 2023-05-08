@@ -104,7 +104,33 @@ func printTape(tape tu.Tape) string {
 		}
 
 	}
-	return machineStyle(top + "\n" + arrow + "\n")
+	dec := printDecValue(tape.Content)
+	return machineStyle(top + "\n" + arrow + "\n d: " + dec + "\n")
+}
+
+func printDecValue(tape []int) string {
+	values := make([]int, 0)
+	count := 0
+
+	for _, v := range tape {
+		if v == 0 {
+			count++
+		} else {
+			values = append(values, count)
+			count = 0
+		}
+	}
+	values = append(values, count)
+	result := ""
+	for i, v := range values {
+		if i != len(values)-1 {
+			result += strconv.Itoa(v) + " * "
+		} else {
+			result += strconv.Itoa(v)
+		}
+	}
+
+	return result
 }
 
 func printState(state tu.State) string {
