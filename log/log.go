@@ -70,21 +70,25 @@ var (
 
 func PrintMachine(machine tu.Machine, err error) {
 	states := make([]string, 0)
+	count := 0
 	for _, v := range machine.States {
+		if count > 8 {
+			states = append(states, "\n")
+		}
 		if v.Number == machine.CurrentState.Number {
 			states = append(states, printActiveState(*v, machine.Tape.Read()))
 		} else {
 			states = append(states, printState(*v))
 		}
-
+		count++
 	}
 	if err == nil {
-		fmt.Println(lipgloss.JoinHorizontal(lipgloss.Top, printTape(*machine.Tape),
+		fmt.Println(lipgloss.JoinVertical(lipgloss.Top, printTape(*machine.Tape),
 			lipgloss.JoinHorizontal(lipgloss.Top, states...)))
 	} else {
 		fmt.Println(
 			lipgloss.JoinVertical(lipgloss.Left, errorStyle("⚠: "+err.Error()),
-				lipgloss.JoinHorizontal(lipgloss.Top, printTape(*machine.Tape),
+				lipgloss.JoinVertical(lipgloss.Top, printTape(*machine.Tape),
 					lipgloss.JoinHorizontal(lipgloss.Top, states...))))
 	}
 
