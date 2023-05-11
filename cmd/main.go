@@ -11,13 +11,11 @@ import (
 	parser "github.com/thebromo/turing-machine/parser"
 )
 
-//TODO binary number representation
-//TODO step and laufmodus
-
 func main() {
 	fmt.Print("Stepmpdus (y/N)?\n> ")
 	stepModus := askBool()
 	file := askFile()
+
 	//read file
 	input := file
 	re := regexp.MustCompile("111")
@@ -30,7 +28,10 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		count := 0
 		for err == nil {
+			count++
+			fmt.Println(count)
 			logger.PrintMachine(turing, err)
 
 			err = turing.DoStep()

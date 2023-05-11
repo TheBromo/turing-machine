@@ -72,9 +72,6 @@ func PrintMachine(machine tu.Machine, err error) {
 	states := make([]string, 0)
 	count := 0
 	for _, v := range machine.States {
-		if count > 8 {
-			states = append(states, "\n")
-		}
 		if v.Number == machine.CurrentState.Number {
 			states = append(states, printActiveState(*v, machine.Tape.Read()))
 		} else {
@@ -82,16 +79,36 @@ func PrintMachine(machine tu.Machine, err error) {
 		}
 		count++
 	}
+
+	states = fitStates(states)
+
 	if err == nil {
 		fmt.Println(lipgloss.JoinVertical(lipgloss.Top, printTape(*machine.Tape),
-			lipgloss.JoinHorizontal(lipgloss.Top, states...)))
+			lipgloss.JoinVertical(lipgloss.Top, states...)))
 	} else {
 		fmt.Println(
 			lipgloss.JoinVertical(lipgloss.Left, errorStyle("⚠: "+err.Error()),
 				lipgloss.JoinVertical(lipgloss.Top, printTape(*machine.Tape),
-					lipgloss.JoinHorizontal(lipgloss.Top, states...))))
+					lipgloss.JoinVertical(lipgloss.Top, states...))))
 	}
 
+}
+
+func fitStates(states []string) []string {
+	count := 0
+	current := make([]string, 0)
+	temp := make([]string, 0)
+	for _, state := range states {
+		if count == 5 {
+			current = append(current, lipgloss.JoinHorizontal(lipgloss.Center, temp...))
+			temp = make([]string, 0)
+			count = 0
+		} else {
+			temp = append(temp, state)
+			count++
+		}
+	}
+	return current
 }
 
 func printTape(tape tu.Tape) string {
@@ -128,7 +145,7 @@ func printDecValue(tape []int) string {
 	result := ""
 	for i, v := range values {
 		if i != len(values)-1 {
-			result += strconv.Itoa(v) + " * "
+			result += strconv.Itoa(v) + " , "
 		} else {
 			result += strconv.Itoa(v)
 		}

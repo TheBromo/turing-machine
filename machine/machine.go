@@ -27,7 +27,7 @@ func (machine *Machine) GetOrAddState(state State) *State {
 	return &state
 }
 
-func (machine Machine) hasState(state State) bool {
+func (machine *Machine) hasState(state State) bool {
 	for _, e := range machine.States {
 		if e.Number == state.Number {
 			return true
