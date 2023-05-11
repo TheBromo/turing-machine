@@ -108,6 +108,7 @@ func fitStates(states []string) []string {
 			count++
 		}
 	}
+	current = append(current, lipgloss.JoinHorizontal(lipgloss.Center, temp...))
 	return current
 }
 
