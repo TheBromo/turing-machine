@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"strconv"
 	"time"
 
 	logger "github.com/thebromo/turing-machine/log"
@@ -31,15 +32,15 @@ func main() {
 		count := 0
 		for err == nil {
 			count++
-			fmt.Println(count)
-			logger.PrintMachine(turing, err)
 
 			err = turing.DoStep()
 			if stepModus {
+				fmt.Println("> " + strconv.Itoa(count))
+				logger.PrintMachine(turing, err)
 				time.Sleep(2 * time.Second) // pauses execution for 2 seconds
 			}
 		}
-
+		fmt.Println("\n> " + strconv.Itoa(count)+"\n")
 		logger.PrintMachine(turing, err)
 
 	} else {
