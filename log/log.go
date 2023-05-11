@@ -150,7 +150,7 @@ func printDecValue(tape []int) string {
 			result += strconv.Itoa(v)
 		}
 	}
-
+	result += "\n result: " + strconv.Itoa(values[len(values)-1])
 	return result
 }
 
