@@ -1,8 +1,8 @@
 package machine
 
 const (
-    Left = iota
-    Right 
+	Left = iota
+	Right
 )
 
 type Transition struct {
