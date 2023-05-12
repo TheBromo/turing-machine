@@ -40,7 +40,7 @@ func main() {
 				time.Sleep(2 * time.Second) // pauses execution for 2 seconds
 			}
 		}
-		fmt.Println("\n> " + strconv.Itoa(count)+"\n")
+		fmt.Println("\n> " + strconv.Itoa(count) + "\n")
 		logger.PrintMachine(turing, err)
 
 	} else {
